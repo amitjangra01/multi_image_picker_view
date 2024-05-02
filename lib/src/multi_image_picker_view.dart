@@ -13,23 +13,25 @@ import 'multi_image_picker_controller.dart';
 class MultiImagePickerView extends StatefulWidget {
   final MultiImagePickerController controller;
 
-  const MultiImagePickerView(
-      {super.key,
-      required this.controller,
-      this.draggable = true,
-      this.shrinkWrap = false,
-      this.gridDelegate = const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 160,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: 1,
-      ),
-      this.padding,
-      this.initialWidget = const DefaultInitialWidget(),
-      this.addMoreButton = const DefaultAddMoreWidget(),
-      this.longPressDelayMilliseconds = 300,
-      this.builder,
-      this.onDragBoxDecoration});
+  const MultiImagePickerView({
+    super.key,
+    required this.controller,
+    this.draggable = true,
+    this.shrinkWrap = false,
+    this.gridDelegate = const SliverGridDelegateWithMaxCrossAxisExtent(
+      maxCrossAxisExtent: 160,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      childAspectRatio: 1,
+    ),
+    this.padding,
+    this.initialWidget = const DefaultInitialWidget(),
+    this.addMoreButton = const DefaultAddMoreWidget(),
+    this.longPressDelayMilliseconds = 300,
+    this.builder,
+    this.onDragBoxDecoration,
+    this.initialValue,
+  });
 
   final bool draggable;
   final bool shrinkWrap;
@@ -40,6 +42,7 @@ class MultiImagePickerView extends StatefulWidget {
   final Widget? addMoreButton;
   final BoxDecoration? onDragBoxDecoration;
   final Widget Function(BuildContext context, ImageFile imageFile)? builder;
+  final List<ImageFile>? initialValue;
 
   static MultiImagePickerControllerWrapper of(BuildContext context) =>
       MultiImagePickerControllerWrapper.of(context);
@@ -57,6 +60,9 @@ class _MultiImagePickerViewState extends State<MultiImagePickerView> {
     super.initState();
     _scrollController = ScrollController();
     widget.controller.addListener(_updateUi);
+    if (widget.initialValue != null) {
+      widget.controller.setImages = widget.initialValue!;
+    }
   }
 
   bool get _showAddMoreButton =>

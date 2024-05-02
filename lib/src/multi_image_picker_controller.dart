@@ -21,6 +21,18 @@ class MultiImagePickerController with ChangeNotifier {
 
   late final List<ImageFile> _images;
 
+  set setImages(Iterable<ImageFile> images) {
+    _images = List.from(images);
+    notifyListeners();
+  }
+
+  /// For getting index of images
+  ImageFile operator [](int index) => _images[index];
+
+  /// For getting only the index of images and not the image itself
+  List<Map<String, dynamic>> get getImagesIndex =>
+      _images.asMap().entries.map((e) => {"${e.key}": e.value}).toList();
+
   /// Returns [Iterable] of [ImageFile] that user has selected.
   Iterable<ImageFile> get images => _images;
 
